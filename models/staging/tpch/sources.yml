@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: tpch
+    database: SNOWFLAKE_SAMPLE_DATA
+    schema: TPCH_SF1
+
+    tables:
+
+      - name: orders
+        description: Orders placed by customers
+
+        config:
+          loaded_at_field: O_ORDERDATE
+          freshness:
+            warn_after:
+              count: 4
+              period: hour
+
+        columns:
+          - name: O_ORDERKEY
+            tests:
+              - not_null
+              - unique
+
+          - name: O_ORDERSTATUS
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['O', 'F', 'P']
+
+      - name: lineitem
+        description: Line items for each order
+
+      - name: customer
+        description: Customer master data
+
+      - name: nation
+        description: Nation lookup table

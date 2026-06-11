@@ -1,0 +1,58 @@
+version: 2
+
+models:
+
+  - name: fct_orders
+    description: >
+      Fact table containing enriched order-level data including customer
+      details, geographic information, and derived time dimensions.
+
+    columns:
+      - name: order_id
+        description: Unique identifier for each order
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: Foreign key linking to dim_customers
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+
+      - name: order_status_code
+        description: Order status (O = Open, F = Filled, P = Pending)
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['O', 'F', 'P']
+
+      - name: order_year
+        description: Year of the order
+
+      - name: order_month
+        description: Month of the order
+
+
+  - name: dim_customers
+    description: >
+      Dimension table containing customer information and segmentation
+      based on lifetime value.
+
+    columns:
+      - name: customer_id
+        description: Unique identifier for each customer
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_name
+        description: Name of the customer
+
+      - name: lifetime_value
+        description: Total value of all orders made by the customer
+
+      - name: customer_tier
+        description: Customer segmentation into Bronze, Silver, and Gold tiers
