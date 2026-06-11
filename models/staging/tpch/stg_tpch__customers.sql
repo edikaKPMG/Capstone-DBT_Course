@@ -7,9 +7,9 @@ with source as (
 renamed as (
 
     select
-        "CUSTKEY" as customer_id,
-        "NAME" as customer_name,
-        "NATIONKEY" as nation_id
+        source."C_CUSTKEY" as customer_id,
+        source."C_NAME" as customer_name,
+        source."C_NATIONKEY" as nation_id
     from source
 
 )

@@ -7,16 +7,15 @@ with source as (
 renamed as (
 
     select
-        "ORDERKEY" as order_id,
-        "PARTKEY" as part_id,
-        "QUANTITY" as quantity,
-        "EXTENDEDPRICE" as extended_price,
-        "DISCOUNT" as discount,
-        "TAX" as tax,
+        source."L_ORDERKEY" as order_id,
+        source."L_PARTKEY" as part_id,
+        source."L_QUANTITY" as quantity,
+        source."L_EXTENDEDPRICE" as extended_price,
+        source."L_DISCOUNT" as discount,
+        source."L_TAX" as tax,
 
-        -- calculations
-        "EXTENDEDPRICE" * (1 - "DISCOUNT") as net_price,
-        "EXTENDEDPRICE" * (1 - "DISCOUNT") * (1 + "TAX") as gross_price
+        source."L_EXTENDEDPRICE" * (1 - source."L_DISCOUNT") as net_price,
+        source."L_EXTENDEDPRICE" * (1 - source."L_DISCOUNT") * (1 + source."L_TAX") as gross_price
 
     from source
 
