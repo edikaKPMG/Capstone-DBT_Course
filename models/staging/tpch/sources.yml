@@ -1,0 +1,37 @@
+version: 2
+
+sources:
+  - name: tpch
+    database: SNOWFLAKE_SAMPLE_DATA
+    schema: TPCH_SF1
+
+    tables:
+
+      - name: orders
+        description: Orders placed by customers
+
+        loaded_at_field: orderdate   # ✅ richtig hier
+
+        freshness:
+          warn_after: {count: 4, period: hour}   # ✅ richtig hier
+
+        columns:
+          - name: orderkey
+            tests:
+              - not_null
+              - unique
+
+          - name: orderstatus
+            tests:
+              - accepted_values:
+                  arguments:       # ✅ FIX für deinen zweiten Fehler!
+                    values: ['O', 'F', 'P']
+
+      - name: lineitem
+        description: Line items
+
+      - name: customer
+        description: Customers
+
+      - name: nation
+        description: Nations
