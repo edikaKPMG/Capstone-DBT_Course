@@ -21,12 +21,12 @@ joined as (
     select
         o.order_id,
         o.customer_id,
+        o.order_status_code,   -- ✅ FIX (jetzt enthalten)
         c.customer_name,
         n.nation_name,
         o.total_price,
         o.order_date,
 
-        -- ✅ required derived fields
         extract(year from o.order_date) as order_year,
         extract(month from o.order_date) as order_month,
         extract(quarter from o.order_date) as order_quarter

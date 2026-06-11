@@ -10,28 +10,30 @@ sources:
       - name: orders
         description: Orders placed by customers
 
-        loaded_at_field: orderdate   # ✅ richtig hier
-
-        freshness:
-          warn_after: {count: 4, period: hour}   # ✅ richtig hier
+        config:
+          loaded_at_field: O_ORDERDATE
+          freshness:
+            warn_after:
+              count: 4
+              period: hour
 
         columns:
-          - name: orderkey
+          - name: O_ORDERKEY
             tests:
               - not_null
               - unique
 
-          - name: orderstatus
+          - name: O_ORDERSTATUS
             tests:
               - accepted_values:
-                  arguments:       # ✅ FIX für deinen zweiten Fehler!
+                  arguments:
                     values: ['O', 'F', 'P']
 
       - name: lineitem
-        description: Line items
+        description: Line items for each order
 
       - name: customer
-        description: Customers
+        description: Customer master data
 
       - name: nation
-        description: Nations
+        description: Nation lookup table
